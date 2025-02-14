@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compliance Issues</title>
+  <!-- jQuery UI CSS for potential enhancements -->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+  <style>
+    /* Apple-Inspired Minimalist Aesthetic */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f2f2f7;
+      margin: 0;
+      padding: 0;
+      color: #1c1c1e;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+    h2 {
+      text-align: center;
+      font-size: 1.75rem;
+      margin-bottom: 25px;
+      color: #0071e3;
+    }
+    
+    /* Dropdown Styling (JotForm-Like) */
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #333;
+    }
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border: 1px solid #d1d1d6;
+      border-radius: 4px;
+      background-color: #fff;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M5.516%207.548l4.484%204.484%204.484-4.484%22%20stroke%3D%22%230071e3%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px;
+      transition: border 0.2s ease;
+    }
+    select:focus {
+      outline: none;
+      border-color: #0071e3;
+      box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.15);
+    }
+    
+    /* Subissues Container */
+    #subissues-container {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #d1d1d6;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .subissue-item {
+      display: block;
+      margin-bottom: 15px;
+    }
+    .subissue-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .subissue-header input[type="checkbox"] {
+      transform: scale(1.2);
+      vertical-align: middle;
+    }
+    .subissue-header label {
+      margin-left: 8px;
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+    .ancillary-container {
+      display: none;
+      margin-left: 30px;
+      border-left: 2px solid #d1d1d6;
+      padding-left: 15px;
+      /* Stack ancillary items vertically */
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ancillary-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+    }
+    .ancillary-item input[type="checkbox"] {
+      transform: scale(1.1);
+      vertical-align: middle;
+    }
+    .ancillary-item > label {
+      margin-left: 6px;
+      margin-bottom: 0;
+      font-size: 0.9rem;
+    }
+    
+    /* Action Buttons */
+    .action-buttons {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .action-buttons button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin: 0 10px;
+    }
+    .add-issue-btn {
+      background-color: #0071e3;
+      color: #fff;
+    }
+    .add-issue-btn:hover {
+      background-color: #005bb5;
+    }
+    
+    /* Where issues are displayed */
+    #issues-list {
+      margin-top: 30px;
+    }
+    
+    /* Apple-Inspired Card for the Issue Summary */
+    .issue-card {
+      position: relative;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      padding: 20px 25px;
+      margin-bottom: 15px;
+      animation: fadeInUp 0.25s ease forwards;
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    .issue-card .delete-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #dc3545;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .issue-card .delete-btn:hover {
+      color: #c82333;
+    }
+    .issue-card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: #0071e3;
+      font-weight: 600;
+    }
+    .issue-card p {
+      margin: 6px 0;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .issue-card .subissues-title {
+      margin: 15px 0 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .issue-card .subissues-list {
+      list-style: disc;
+      margin: 0 0 0 1.4em;
+      padding: 0;
+    }
+    .issue-card .subissues-list li {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+    
+    /* Fade In + Slight Slide Up Animation */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Compliance Issues</h2>
+    
+    <!-- Dropdowns -->
+    <label for="failure-type-select">Failure Type</label>
+    <select id="failure-type-select">
+      <option value="">Select Failure Type</option>
+    </select>
+    
+    <label for="issue-description-select">Issue Description</label>
+    <select id="issue-description-select" disabled>
+      <option value="">Select Issue Description</option>
+    </select>
+    
+    <!-- Subissues & Ancillary Options -->
+    <div id="subissues-container">
+      <!-- Checkboxes for subissues and ancillary options will be rendered here -->
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="add-issue-btn" id="add-issue">Add Issue</button>
+    </div>
+    
+    <!-- List of Added Issues -->
+    <div id="issues-list">
+      <!-- Each added issue card will appear here -->
+    </div>
+  </div>
+  
+  <!-- jQuery and jQuery UI from CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+  <script>
+    /****************************************************
+     * 1. Data Handling: complianceData and JSON loading *
+     ****************************************************/
+    var complianceData = {};
+    
+    // Load JSON data on document ready
+    $(document).ready(function(){
+      $.getJSON("complianceData.json", function(data) {
+        complianceData = data;
+        populateFailureTypes();
+      });
+      
+      // Failure Type change => populate Issue Descriptions
+      $("#failure-type-select").on("change", function(){
+        var failureType = $(this).val();
+        populateIssueDescriptions(failureType);
+        $("#subissues-container").empty();
+      });
+      
+      // Issue Description change => render subissues
+      $("#issue-description-select").on("change", function(){
+        var failureType = $("#failure-type-select").val();
+        var issueDescription = $(this).val();
+        renderSubissues(failureType, issueDescription);
+      });
+      
+      // Add Issue button => collect data and add summary card
+      $("#add-issue").on("click", function(){
+        var issueObj = collectCurrentIssue();
+        if (issueObj) {
+          addIssueCard(issueObj);
+          // Reset form
+          $("#failure-type-select").val("");
+          $("#issue-description-select").empty().append('<option value="">Select Issue Description</option>').prop("disabled", true);
+          $("#subissues-container").empty();
+        }
+      });
+    });
+    
+    /****************************************************
+     * 2. Populate Dropdowns and Render Subissues       *
+     ****************************************************/
+    function populateFailureTypes() {
+      var $select = $("#failure-type-select");
+      $select.empty();
+      $select.append('<option value="">Select Failure Type</option>');
+      $.each(complianceData, function(failureType, _) {
+        $select.append('<option value="'+failureType+'">'+failureType+'</option>');
+      });
+    }
+    
+    function populateIssueDescriptions(failureType) {
+      var $select = $("#issue-description-select");
+      $select.empty();
+      $select.append('<option value="">Select Issue Description</option>');
+      if (failureType && complianceData[failureType]) {
+        $.each(complianceData[failureType], function(issueDesc, _) {
+          $select.append('<option value="'+issueDesc+'">'+issueDesc+'</option>');
+        });
+        $select.prop("disabled", false);
+      } else {
+        $select.prop("disabled", true);
+      }
+    }
+    
+    function renderSubissues(failureType, issueDescription) {
+      var $container = $("#subissues-container");
+      $container.empty();
+      
+      if (failureType && issueDescription && complianceData[failureType] && complianceData[failureType][issueDescription]) {
+        var subissuesObj = complianceData[failureType][issueDescription];
+        
+        $.each(subissuesObj, function(subissueKey, subVal) {
+          var $itemDiv = $('<div class="subissue-item"></div>');
+          var displayName = subissueKey === "" ? "General" : subissueKey;
+          
+          // Subissue header
+          var checkboxId = 'chk-' + failureType.replace(/\s+/g, '-') + '-' + issueDescription.replace(/\s+/g, '-') + '-' + displayName.replace(/\s+/g, '-');
+          var $headerDiv = $('<div class="subissue-header"></div>');
+          var $chk = $('<input type="checkbox" class="subissue-checkbox">')
+            .attr('id', checkboxId)
+            .attr('data-subissue', subissueKey);
+          var $label = $('<label></label>').attr('for', checkboxId).text(displayName);
+          $headerDiv.append($chk).append($label);
+          $itemDiv.append($headerDiv);
+          
+          // Ancillary items?
+          var ancillaryItems = [];
+          if (Array.isArray(subVal)) {
+            ancillaryItems = subVal;
+          } else if (typeof subVal === "object" && subVal !== null) {
+            if (subVal.hasOwnProperty("") && Array.isArray(subVal[""])) {
+              ancillaryItems = subVal[""];
+            }
+          }
+          
+          if (ancillaryItems.length > 0) {
+            var $ancillaryContainer = $('<div class="ancillary-container"></div>').hide();
+            ancillaryItems.forEach(function(item, idx) {
+              var ancCheckboxId = checkboxId + '-anc-' + idx;
+              var $ancChk = $('<input type="checkbox" class="ancillary-checkbox">')
+                .attr('id', ancCheckboxId)
+                .attr('data-ancillary', item);
+              var $ancLabel = $('<label></label>').attr('for', ancCheckboxId).text(item);
+              var $ancDiv = $('<div class="ancillary-item"></div>').append($ancChk).append($ancLabel);
+              $ancillaryContainer.append($ancDiv);
+            });
+            $itemDiv.append($ancillaryContainer);
+          }
+          
+          $container.append($itemDiv);
+        });
+      }
+    }
+    
+    // Show/hide ancillary items when subissue is checked
+    $(document).on("change", ".subissue-checkbox", function(){
+      var $ancillaryContainer = $(this).closest(".subissue-item").find(".ancillary-container");
+      if ($(this).is(":checked")) {
+        $ancillaryContainer.slideDown(150);
+      } else {
+        $ancillaryContainer.find("input[type='checkbox']").prop("checked", false);
+        $ancillaryContainer.slideUp(150);
+      }
+    });
+    
+    /****************************************************
+     * 3. Collect Data & Create the Summary Card        *
+     ****************************************************/
+    function collectCurrentIssue() {
+      var failureType = $("#failure-type-select").val();
+      var issueDescription = $("#issue-description-select").val();
+      if (!failureType || !issueDescription) {
+        alert("Please select both a Failure Type and an Issue Description.");
+        return null;
+      }
+      
+      var subissues = [];
+      $("#subissues-container .subissue-item").each(function(){
+        var $chk = $(this).find(".subissue-checkbox");
+        if ($chk.is(":checked")) {
+          var subKey = $chk.attr("data-subissue");
+          var subLabel = $(this).find("label").first().text();
+          var ancillary = [];
+          $(this).find(".ancillary-checkbox").each(function(){
+            if ($(this).is(":checked")) {
+              ancillary.push($(this).attr("data-ancillary"));
+            }
+          });
+          subissues.push({
+            subissue: subKey === "" ? "General" : subLabel,
+            ancillary: ancillary
+          });
+        }
+      });
+      
+      return {
+        failureType: failureType,
+        issueDescription: issueDescription,
+        subissues: subissues
+      };
+    }
+    
+    /*
+      4. Apple-Inspired Card UI for each added issue
+    */
+    function addIssueCard(issueObj) {
+      // Create the card container with fadeInUp effect
+      let $card = $(`
+        <div class="issue-card">
+          <button class="delete-btn" title="Delete Issue">&times;</button>
+          <h3>Issue Summary</h3>
+          <p><strong>Failure Type:</strong> ${issueObj.failureType}</p>
+          <p><strong>Issue Description:</strong> ${issueObj.issueDescription}</p>
+        </div>
+      `);
+      
+      // If subissues exist, add them as bullet points
+      if (issueObj.subissues && issueObj.subissues.length > 0) {
+        $card.append(`<div class="subissues-title">Sub-Issues</div>`);
+        let $ul = $('<ul class="subissues-list"></ul>');
+        
+        issueObj.subissues.forEach(sub => {
+          let ancillaryText = sub.ancillary.length
+            ? sub.ancillary.join(", ")
+            : "No ancillary selections";
+          
+          let $li = $(`
+            <li>
+              <strong>${sub.subissue}:</strong> ${ancillaryText}
+            </li>
+          `);
+          $ul.append($li);
+        });
+        
+        $card.append($ul);
+      }
+      
+      // If no subissues
+      else {
+        $card.append(`
+          <p style="margin-top: 15px; font-size: 0.95rem;">
+            No subissue selections.
+          </p>
+        `);
+      }
+      
+      // Delete button logic
+      $card.find(".delete-btn").on("click", function(){
+        $card.remove();
+      });
+      
+      // Append to #issues-list
+      $("#issues-list").append($card);
+    }
+  </script>
+</body>
+</html>

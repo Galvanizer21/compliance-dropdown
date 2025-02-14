@@ -1,0 +1,111 @@
+{
+  "Demographic": {
+    "Failure in Nondiscrimination Tests": { "": [] },
+    "Failure to Meet Participation Standards": { "": [] },
+    "Failure to Satisfy Minimum Coverage Requirements": { "": [] },
+    "Failure to Satisfy Top-Heavy Requirements": { "": [] }
+  },
+  "Operational": {
+    "Excess Elective Deferrals": {
+      "402(g) Limit": [
+        "Standard 402(g) Limit",
+        "Catch-Up Contributions (Age 50+)",
+        "Special 403(b) Lifetime Catch-Up",
+        "457 Plan Double Limit (3 years before retirement)"
+      ]
+    },
+    "Exclusion of Eligible Employees from Contributions or Accruals": {
+      "Exclusion from Designated Roth Contributions": [
+        "Missed Deferral Opportunity",
+        "Missed Elective Deferrals",
+        "Missed Employer Matching Contributions"
+      ],
+      "Exclusion from Elective Deferrals": {
+        "": [
+          "Missed Deferral Opportunity",
+          "Missed Elective Deferrals",
+          "Missed Employer Matching Contributions"
+        ]
+      },
+      "Exclusion from Safe Harbor Plan (Matching Contributions)": {
+        "": [
+          "Delinquent Contribution",
+          "Missed Participation Opportunity",
+          "Missed Elective Participation"
+        ]
+      },
+      "Exclusion from Safe Harbor Plan (Nonelective Contributions)": {
+        "": [
+          "Delinquent Contribution",
+          "Missed Participation Opportunity",
+          "Missed Elective Participation"
+        ]
+      }
+    },
+    "Failure to Timely Pay Required Minimum Distribution": { "": [] },
+    "Failure to Obtain Participant or Spousal Consent for Distribution": { "": [] },
+    "Failure to Satisfy § 415 Limits in a Defined Contribution Plan": { "": [] },
+    "Issues with Orphan Plans": { "": [] },
+    "Plan Loan Failures": {
+      "Defaulted Loans (Section 6.07(3)(d))": {
+        "": [
+          "Compliant with §72(p) Requirements",
+          "Not Compliant with §72(p) Requirements"
+        ]
+      },
+      "Failure to Obtain Spousal Consent (Section 6.07(4)(a))": {
+        "": [
+          "Compliant with §72(p) Requirements",
+          "Not Compliant with §72(p) Requirements"
+        ]
+      },
+      "Exceeding Plan Loan Limits (Section 6.07(5))": {
+        "": [
+          "Compliant with §72(p) Requirements",
+          "Not Compliant with §72(p) Requirements"
+        ]
+      }
+    }
+  },
+  "Plan Document": {
+    "Failure to Adopt Good Faith Amendments": { "": [] },
+    "Failure to Adopt Interim Amendments": { "": [] },
+    "Nonamender Failure": { "": [] }
+  },
+  "Fiduciary": {
+    "Delinquent Participant Contributions to Pension Plans": {
+      "Delinquent Catch-Up Contributions": {
+        "": [
+          "Deferred, Not Deposited",
+          "Deferred, Deposited Late"
+        ]
+      },
+      "Delinquent Designated Roth Contributions": {
+        "": [
+          "Deferred, Not Deposited",
+          "Deferred, Deposited Late"
+        ]
+      },
+      "Delinquent Elective Deferrals": {
+        "": [
+          "Deferred, Not Deposited",
+          "Deferred, Deposited Late"
+        ]
+      }
+    },
+    "Delinquent Participant Loan Repayments to Pension Plans": {
+      "Misunderstanding of Loan Terms": {
+        "": [
+          "Deferred, Not Deposited",
+          "Deferred, Deposited Late"
+        ]
+      },
+      "Administrative or Clerical Errors": {
+        "": [
+          "Deferred, Not Deposited",
+          "Deferred, Deposited Late"
+        ]
+      }
+    }
+  }
+}
